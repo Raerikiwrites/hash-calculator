@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card p-4 shadow-sm">
+  <h3 class="mb-3">Integrity Checker</h3>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Algorithm</label>
+      <select class="form-select" name="algorithm">
+        <option value="sha256" selected>SHA-256</option>
+        <option value="sha512">SHA-512</option>
+        <option value="md5">MD5</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload file</label>
+      <input class="form-control" type="file" name="file_input" accept="*/*">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Expected Hash</label>
+      <input class="form-control" name="expected_hash" placeholder="Paste expected hash">
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Check</button>
+      <button class="btn btn-secondary" type="reset">Reset</button>
+    </div>
+  </form>
+
+  {% if status %}
+    <hr>
+    <div class="alert {{ 'alert-success' if 'authentic' in status.lower() else 'alert-danger' }}">{{ status }}</div>
+    {% if actual_hash %}
+      <div><strong>Actual hash:</strong></div>
+      <textarea class="form-control" rows="3" readonly>{{ actual_hash }}</textarea>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

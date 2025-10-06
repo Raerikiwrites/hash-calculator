@@ -1,0 +1,36 @@
+:root{
+  --blue-700: #0d6efd;
+  --blue-800: #0b5ed7;
+  --nav-blue: #083a6b;
+  --muted: #6c757d;
+}
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,#f3f6fb,#ffffff);
+  color: #1f2937;
+  margin: 0;
+  padding-bottom: 80px;
+}
+.navbar-blue {
+  background: linear-gradient(90deg, var(--nav-blue), #0a3e6a);
+}
+.footer-blue {
+  background: linear-gradient(90deg, #052a4a, #06305a);
+}
+.card {
+  border: none;
+  border-radius: 12px;
+}
+textarea.form-control[readonly] {
+  background-color: #f8fafc;
+}
+.btn-primary {
+  background: var(--blue-700);
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--blue-800);
+}
+.container { max-width: 920px; }
+.form-text { color: var(--muted); }
+.table textarea { height: auto; }

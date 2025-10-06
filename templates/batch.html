@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card p-4 shadow-sm">
+  <h3 class="mb-3">Batch Hashing</h3>
+  <form id="batchForm" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Algorithm</label>
+      <select class="form-select" name="algorithm">
+        <option value="sha256" selected>SHA-256</option>
+        <option value="md5">MD5</option>
+        <option value="sha512">SHA-512</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Select files (multiple)</label>
+      <input class="form-control" type="file" name="files" multiple>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Hash Files</button>
+      <button class="btn btn-secondary" type="reset">Reset</button>
+    </div>
+  </form>
+
+  {% if results %}
+    <hr>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr><th>Filename</th><th>Hash</th></tr>
+        </thead>
+        <tbody>
+          {% for name, h in results %}
+          <tr>
+            <td>{{ name }}</td>
+            <td><textarea class="form-control" rows="2" readonly>{{ h }}</textarea></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <form method="POST" action="{{ url_for('batch_download') }}">
+      <input type="hidden" name="csvdata" id="csvdata" value="">
+      <button class="btn btn-success" id="downloadCSV" type="submit">Download CSV</button>
+    </form>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const downloadBtn = document.getElementById('downloadCSV');
+  if (!downloadBtn) return;
+  downloadBtn.addEventListener('click', function(e){
+    // prepare csvdata from table
+    const rows = document.querySelectorAll('table tbody tr');
+    let csv = 'filename,hash\\n';
+    rows.forEach(r=>{
+      const cells = r.querySelectorAll('td');
+      const fn = cells[0].innerText.replace(/,/g, ' ');
+      const hash = cells[1].innerText.replace(/,/g, ' ');
+      csv += `${fn},${hash}\\n`;
+    });
+    document.getElementById('csvdata').value = csv;
+  });
+});
+</script>
+{% endblock %}
